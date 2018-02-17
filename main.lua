@@ -2,6 +2,7 @@ Object = require 'libraries/classic/classic'
 Input = require 'libraries/boipushy/Input'
 Timer = require 'libraries/hump/timer'
 Camera = require 'libraries/hump/camera'
+Physics = require 'libraries/windfield/windfield'
 local _ = require 'libraries/Moses/moses'
 
 function love.load()

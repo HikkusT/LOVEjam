@@ -2,6 +2,7 @@ Stage = Object:extend()
 
 function Stage:new()
     self.area = Area(self)
+    self.area:AddPhysicsWorld()
     self.mainCanvas = love.graphics.newCanvas(gw, gh)
 
     self.player = self.area:AddGameObject('Player', gw/2, gh/2)
