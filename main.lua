@@ -14,9 +14,14 @@ function love.load()
 
     --Inputs
     input:bind('left', 'left')
+    input:bind('a', 'left')
     input:bind('right', 'right')
+    input:bind('d', 'right')
     input:bind('up', 'up')
+    input:bind('w', 'up')
     input:bind('down', 'down')
+    input:bind('s', 'down')
+    input:bind('mouse1', 'lclick')
 
     --OOP Setup
     local object_files = {}
@@ -28,10 +33,10 @@ function love.load()
     currentRoom = Stage()
 
     --Canvas Setup
-    --love.graphics.setDefaultFilter('nearest')
-    --love.graphics.setLineStyle('rough')
-    --love.graphics.setLineWidth(2)
-    --resize(3)
+    love.graphics.setDefaultFilter('nearest')
+    love.graphics.setLineStyle('rough')
+    love.graphics.setLineWidth(1)
+    --resize(2)
 end
 
 function resize(s)

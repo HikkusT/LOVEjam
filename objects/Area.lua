@@ -18,6 +18,11 @@ end
 function Area:draw()
     --if self.world then self.world:draw() end
 
+    table.sort(self.gameObjects, function(a, b) 
+        if a.depth == b.depth then return a.creationTime < b.creationTime
+        else return a.depth < b.depth end
+    end)
+
     for _, gameObject in ipairs(self.gameObjects) do gameObject:draw() end
 end
 

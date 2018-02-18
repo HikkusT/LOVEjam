@@ -18,3 +18,5 @@ function pushRotate(x, y, r)
     love.graphics.rotate(r or 0)
     love.graphics.translate(-x, -y)
 end
+
+function math.sign(n) return n>0 and 1 or n<0 and -1 or 0 end
