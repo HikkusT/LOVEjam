@@ -6,6 +6,7 @@ function Stage:new()
     self.mainCanvas = love.graphics.newCanvas(gw, gh)
 
     self.player = self.area:AddGameObject('Player', gw/2, gh/2)
+    self.hourglass = self.area:AddGameObject('Hourglass', gw/2, gh/2)
     input:bind('f3', function() self.player.dead = true end)
 end
 

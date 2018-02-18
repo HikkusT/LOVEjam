@@ -11,7 +11,7 @@ function Area:update(dt)
     for i = #self.gameObjects, 1, -1 do
         local gameObject = self.gameObjects[i]
         gameObject:update(dt)
-        if gameObject.dead then table.remove(self.gameObjects, i)  print('oi') end
+        if gameObject.dead then table.remove(self.gameObjects, i) end
     end
 end
 
@@ -30,4 +30,7 @@ end
 
 function Area:AddPhysicsWorld()
     self.world = Physics.newWorld(0, 0, true)
+
+    self.world:addCollisionClass('Player')
+    self.world:addCollisionClass('Particle', {ignores = {'Player', 'Particle'}})
 end
