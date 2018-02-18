@@ -48,7 +48,7 @@ function Hourglass:update(dt)
 end
 
 function Hourglass:draw()
-    love.graphics.setColor(self.defaultColor)
+    love.graphics.setColor(default_color)
     love.graphics.setLineWidth(3)
     pushRotate(self.x, self.y, self.angle)
     local points = fn.map(self.polygons, function(k, v)

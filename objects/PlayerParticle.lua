@@ -24,6 +24,7 @@ function PlayerParticle:update(dt)
 end
 
 function PlayerParticle:draw()
+    love.graphics.setLineWidth(default_lineWidth)
     love.graphics.setColor(self.lineColor)
     love.graphics.circle('line', self.x, self.y, self.radius)
 end

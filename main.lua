@@ -4,6 +4,7 @@ Timer = require 'libraries/hump/timer'
 Camera = require 'libraries/hump/camera'
 Physics = require 'libraries/windfield/windfield'
 fn = require 'libraries/Moses/moses'
+require 'globals'
 
 function love.load()
     --Lib Setup

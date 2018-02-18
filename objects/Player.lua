@@ -8,6 +8,10 @@ function Player:new(area, x, y, opts)
     self.collider:setObject(self)
     self.collider:setCollisionClass('Player')
 
+    self.canShoot = true
+    self.shootTimer = 0
+    self.shootCooldown = 1
+
     self.angle = -math.pi/2
     self.angleVelocity = 1.66 * math.pi
     self.frontVelocity = 0
@@ -24,6 +28,8 @@ function Player:new(area, x, y, opts)
     self.minPower = 10
     self.maxPower = 20
     self.power = self.minPower
+
+    self:setAttack('Neutral')
 
     self.timer:every(0.25, function() local ang = random(self.angle + 5*math.pi/6, self.angle + 7*math.pi/6) 
         self.area:AddGameObject('PlayerParticle', self.x + 1.5 * self.r * math.cos(ang), self.y + 1.5 * self.r * math.sin(ang), {r = ang}) 
@@ -55,6 +61,10 @@ end
 function Player:update(dt)
     Player.super.update(self, dt)
 
+    --Checks
+    self.shootTimer = self.shootTimer + dt
+    if self.shootTimer > self.shootCooldown then self.canShoot = true end
+
     --Handling Input
     self.angle = math.atan2(select(2, love.mouse.getPosition( )) - self.y, select(1, love.mouse.getPosition( )) - self.x)
 
@@ -66,7 +76,11 @@ function Player:update(dt)
     elseif input:down('left') then self.sideVelocity = math.max(self.sideVelocity - self.acceleration * dt, -self.maxVelocity)
     else self.sideVelocity = math.sign(self.sideVelocity) * math.max(math.abs(self.sideVelocity) - self.acceleration * dt, 0) end
 
-    if input:down('lclick') then self:shoot() end
+    if input:down('lclick') and self.canShoot then 
+        self:shoot()
+        self.canShoot = false
+        self.shootTimer = 0
+    end
 
 
     --Stats
@@ -78,6 +92,7 @@ function Player:update(dt)
 end
 
 function Player:draw()
+    love.graphics.setLineWidth(default_lineWidth)
     pushRotate(self.x, self.y, self.angle)
     for i, polygon in ipairs(self.polygons) do
         local points = fn.map(polygon, function(k, v) 
@@ -87,7 +102,7 @@ function Player:draw()
           		return self.y + v + random(-0.5, 0.5) 
         	end 
         end)
-        love.graphics.setColor(self.polygonColors[i])
+        love.graphics.setColor(default_color)
         love.graphics.polygon('line', points)
     end
     love.graphics.pop()
@@ -106,4 +121,9 @@ function Player:shoot()
     self.area:AddGameObject('ShootEffect', select(1, effectPos(self)), select(2, effectPos(self)), {parent = self, getPos = effectPos})
 
     self.area:AddGameObject('Projectile', self.x + 1.5 * self.width/2 * math.cos(self.angle), self.y + 1.5 * self.width/2* math.sin(self.angle), {r = self.angle})
+end
+
+function Player:setAttack(attack)
+    self.attack = attack
+    self.shootCooldown = attacks[attack].cooldown
 end
