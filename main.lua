@@ -5,6 +5,7 @@ Camera = require 'libraries/hump/camera'
 Physics = require 'libraries/windfield/windfield'
 fn = require 'libraries/Moses/moses'
 require 'globals'
+font = love.graphics.newFont('resources/fonts/m5x7.ttf', 32)
 
 function love.load()
     --Lib Setup

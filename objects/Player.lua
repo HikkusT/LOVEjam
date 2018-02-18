@@ -7,6 +7,7 @@ function Player:new(area, x, y, opts)
     self.collider = self.area.world:newCircleCollider(self.x, self.y, self.r)
     self.collider:setObject(self)
     self.collider:setCollisionClass('Player')
+    self.depth = 500
 
     self.canShoot = true
     self.shootTimer = 0
@@ -31,9 +32,13 @@ function Player:new(area, x, y, opts)
 
     self:setAttack('Neutral')
 
-    self.timer:every(0.25, function() local ang = random(self.angle + 5*math.pi/6, self.angle + 7*math.pi/6) 
-        self.area:AddGameObject('PlayerParticle', self.x + 1.5 * self.r * math.cos(ang), self.y + 1.5 * self.r * math.sin(ang), {r = ang}) 
-    end)
+    --self.timer:every(0.25, function() local ang = random(self.angle + 5*math.pi/6, self.angle + 7*math.pi/6) 
+    --   self.area:AddGameObject('PlayerParticle', self.x + 1.5 * self.r * math.cos(ang), self.y + 1.5 * self.r * math.sin(ang), {r = ang}) 
+    --end)
+
+    --self.timer:every(0.01, function()
+        --self.area:AddGameObject('TrailParticle', self.x - self.width/2 * math.cos(self.angle), self.y - self.width/2 * math.sin(self.angle), {parent = self, r = random(6, 8), d = random(0.15, 0.25)})
+    --end)
 
     self.polygons = {}
 
@@ -61,10 +66,6 @@ end
 function Player:update(dt)
     Player.super.update(self, dt)
 
-    --Checks
-    self.shootTimer = self.shootTimer + dt
-    if self.shootTimer > self.shootCooldown then self.canShoot = true end
-
     --Handling Input
     self.angle = math.atan2(select(2, love.mouse.getPosition( )) - self.y, select(1, love.mouse.getPosition( )) - self.x)
 
@@ -82,13 +83,19 @@ function Player:update(dt)
         self.shootTimer = 0
     end
 
+    --Checks
+    self.shootTimer = self.shootTimer + dt
+    if self.shootTimer > self.shootCooldown then self.canShoot = true end
+    if math.abs(self.frontVelocity) > 0.01 or math.abs(self.sideVelocity) > 0.01 then 
+        self.area:AddGameObject('TrailParticle', self.x - self.width/2 * math.cos(self.angle), self.y - self.width/2 * math.sin(self.angle), {parent = self, r = random(6, 8), d = random(0.15, 0.25), initialColor = {255, 255, 255}, finalColor = {221, 32, 101}})
+    end
 
     --Stats
     self.stamina = math.min(self.stamina + self.staminaDecrase * dt, self.maxStamina)
     self.hp = math.min(self.hp + self.hpDecrase * dt, self.maxHP)
     self.power = self.minPower + (self.maxPower - self.minPower) * self.hp/self.maxHP
     
-    self.collider:setLinearVelocity(self.sideVelocity, -self.frontVelocity)
+    self.collider:setLinearVelocity(self.frontVelocity * math.cos(self.angle) - self.sideVelocity * math.sin(self.angle), self.frontVelocity * math.sin(self.angle) + self.sideVelocity * math.cos(self.angle))
 end
 
 function Player:draw()
