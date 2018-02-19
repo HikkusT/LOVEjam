@@ -110,6 +110,17 @@ function Player:draw()
           		return self.y + v + random(-0.7, 0.7) 
         	end 
         end)
+        love.graphics.setColor(bg_color)
+        love.graphics.polygon('fill', points)
+    end 
+    for i, polygon in ipairs(self.polygons) do
+        local points = fn.map(polygon, function(k, v) 
+        	if k % 2 == 1 then 
+          		return self.x + v + random(-0.7, 0.7) 
+        	else 
+          		return self.y + v + random(-0.7, 0.7) 
+        	end 
+        end)
         love.graphics.setColor(default_color)
         love.graphics.polygon('line', points)
     end
@@ -123,8 +134,12 @@ end
 
 function Player:die()
     self.dead = true
-    for i = 1, love.math.random(5, 8) do
-        self.area:AddGameObject('DeathParticle', self.x, self.y, {initialColor = default_color, finalColor = pink_color, s = random(10, 15), d = random(0.5, 0.7)})
+    slow(0.1, 1)
+    flash(6)
+    camera:shake(15, 100, 0.3)
+
+    for i = 1, love.math.random(8, 10) do
+        self.area:AddGameObject('DeathParticle', self.x, self.y, {initialColor = default_color, finalColor = pink_color, s = random(16, 21), d = random(0.5, 0.7), v = random(120, 180)})
     end
 end
 

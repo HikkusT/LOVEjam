@@ -12,6 +12,8 @@ function love.load()
     input = Input()
     timer = Timer()
     camera = Camera()
+    slowAmount = 1
+    flashFrames = nil
     --input:bind('f3', function() camera:shake(4, 60, 1) end)
 
     --Inputs
@@ -67,14 +69,23 @@ function RequireFiles(file_list)
 end
 
 function love.update(dt)
-    timer:update(dt)
-    camera:update(dt)
+    timer:update(dt * slowAmount)
+    camera:update(dt * slowAmount)
 
-    if currentRoom then currentRoom:update(dt) end
+    if currentRoom then currentRoom:update(dt * slowAmount) end
 end
 
 function love.draw()
     if currentRoom then currentRoom:draw() end
+
+    if flashFrames then
+        flashFrames = flashFrames - 1
+        if flashFrames < 0 then flashFrames = nil end
+    end
+    if flashFrames then
+        love.graphics.setColor(bg_color)
+        love.graphics.rectangle('fill', 0, 0, sx*gw, sy*gh)
+    end
 end
 
 function AddRoom(roomType, roomName)

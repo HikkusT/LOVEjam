@@ -22,3 +22,12 @@ end
 function math.sign(n) return n>0 and 1 or n<0 and -1 or 0 end
 
 function clone(a) return {unpack(a)} end
+
+function slow(amount, duration)
+    slowAmount = amount
+    timer:tween('slow', duration, _G, {slowAmount = 1}, 'in-out-cubic')
+end
+
+function flash(frames)
+    flashFrames = frames
+end

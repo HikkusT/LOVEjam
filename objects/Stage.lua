@@ -13,6 +13,9 @@ function Stage:new()
 end
 
 function Stage:update(dt)
+    camera.smoother = camera.smooth.damped(5)
+    camera:lockPosition(dt, gw/2, gh/2)
+
     self.area:update(dt)
 end
 
