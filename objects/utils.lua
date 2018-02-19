@@ -20,3 +20,5 @@ function pushRotate(x, y, r)
 end
 
 function math.sign(n) return n>0 and 1 or n<0 and -1 or 0 end
+
+function clone(a) return {unpack(a)} end

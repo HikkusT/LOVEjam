@@ -9,7 +9,7 @@ function Stage:new()
     self.hourglass = self.area:AddGameObject('Hourglass', gw/2, gh/2)
     self.score = 0
     self.font = font
-    input:bind('f3', function() self.player.dead = true end)
+    input:bind('f3', function() self.player:die() end)
 end
 
 function Stage:update(dt)

@@ -7,7 +7,8 @@ function Projectile:new(area, x, y, opts)
     self.width = opts.size or 6
     self.length = opts.length or 45
     self.velocity = opts.vel or 1300
-    self.color = {222, 222, 222}
+    self.color = highlight_color
+    self.color = clone(self.color)
 
     self.collider = self.area.world:newCircleCollider(self.x, self.y, self.size)
     self.collider:setObject(self)
@@ -31,5 +32,8 @@ function Projectile:draw()
 end
 
 function Projectile:destroy()
+    for i = 1, love.math.random(5, 8) do
+        self.area:AddGameObject('DeathParticle', self.x, self.y, {initialColor = pink_color, finalColor = default_color, s = random(10, 15), d = random(0.5, 0.7)})
+    end
     Projectile.super.destroy(self)
 end

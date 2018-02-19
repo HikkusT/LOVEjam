@@ -8,7 +8,8 @@ function ShootEffect:new(area, x, y, opts)
     self.funcPos = opts.getPos
 
     self.w = opts.w or 13
-    self.defaultColor = {255, 255, 255, 255}
+    self.defaultColor = highlight_color
+    self.defaultColor = clone(self.defaultColor)
 
     self.timer:tween(opts.duration or 0.1, self, {w = 0}, 'in-out-cubic', function() self.dead = true end)
 end

@@ -11,3 +11,7 @@ end
 function Template:draw()
 
 end
+
+function Template:destroy()
+    Template.super.destroy(self)
+end

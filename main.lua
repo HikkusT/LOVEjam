@@ -38,6 +38,7 @@ function love.load()
     love.graphics.setDefaultFilter('nearest')
     love.graphics.setLineStyle('rough')
     love.graphics.setLineWidth(1)
+    love.graphics.setBackgroundColor(bg_color)
     --resize(2)
 end
 

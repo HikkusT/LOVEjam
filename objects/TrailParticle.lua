@@ -4,6 +4,7 @@ function TrailParticle:new(area, x, y, opts)
     TrailParticle.super.new(self, area, x, y, opts)
     self.depth = 100
     self.color = opts.initialColor or {255, 255, 255}
+    self.color = clone(self.color)
 
     self.r = opts.r or random(10, 15)
     self.timer:tween(opts.d or random(0.3, 0.5), self, {r = 0, color = opts.finalColor}, 'linear', 
