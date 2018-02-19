@@ -61,3 +61,7 @@ function Hourglass:draw()
     love.graphics.polygon('line', points)
     love.graphics.pop()
 end
+
+function Hourglass:destroy()
+    Hourglass.super.destroy(self)
+end

@@ -87,7 +87,8 @@ function Player:update(dt)
     self.shootTimer = self.shootTimer + dt
     if self.shootTimer > self.shootCooldown then self.canShoot = true end
     if math.abs(self.frontVelocity) > 0.01 or math.abs(self.sideVelocity) > 0.01 then 
-        self.area:AddGameObject('TrailParticle', self.x - self.width/2 * math.cos(self.angle), self.y - self.width/2 * math.sin(self.angle), {parent = self, r = random(6, 8), d = random(0.15, 0.25), initialColor = {255, 255, 255}, finalColor = {221, 32, 101}})
+        self.area:AddGameObject('TrailParticle', self.x - self.width/2 * math.cos(self.angle + math.pi/36) + random(0, 2), self.y - self.width/2 * math.sin(self.angle + math.pi/36) + random(0, 2), {parent = self, r = random(10, 15), d = random(0.15, 0.25), initialColor = {255, 255, 255}, finalColor = {221, 32, 101}})
+        self.area:AddGameObject('TrailParticle', self.x - self.width/2 * math.cos(self.angle - math.pi/36) + random(0, 2), self.y - self.width/2 * math.sin(self.angle - math.pi/36) + random(0, 2), {parent = self, r = random(10, 15), d = random(0.15, 0.25), initialColor = {255, 255, 255}, finalColor = {221, 32, 101}})
     end
 
     --Stats
@@ -118,6 +119,10 @@ function Player:draw()
     --love.graphics.line(self.x, self.y, self.x + 2 * self.r * math.cos(self.angle), self.y + 2 * self.r * math.sin(self.angle))
     --love.graphics.line(self.x, self.y, self.x + 2 * self.r * math.cos((self.angle + 5*math.pi/6)), self.y + 2 * self.r * math.sin((self.angle + 5 *math.pi/6)))
     --love.graphics.line(self.x, self.y, self.x + 2 * self.r * math.cos((self.angle + 7*math.pi/6)), self.y + 2 * self.r * math.sin((self.angle + 7* math.pi/6)))
+end
+
+function Player:destroy()
+    Player.super.destroy(self)
 end
 
 function Player:shoot()

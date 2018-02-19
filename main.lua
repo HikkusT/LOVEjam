@@ -1,6 +1,6 @@
 Object = require 'libraries/classic/classic'
 Input = require 'libraries/boipushy/Input'
-Timer = require 'libraries/hump/timer'
+Timer = require 'libraries/EnhancedTimer/EnhancedTimer'
 Camera = require 'libraries/hump/camera'
 Physics = require 'libraries/windfield/windfield'
 fn = require 'libraries/Moses/moses'

@@ -28,3 +28,7 @@ function PlayerParticle:draw()
     love.graphics.setColor(self.lineColor)
     love.graphics.circle('line', self.x, self.y, self.radius)
 end
+
+function PlayerParticle:destroy()
+    PlayerParticle.super.destroy(self)
+end
