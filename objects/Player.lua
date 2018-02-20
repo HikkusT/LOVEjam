@@ -7,7 +7,7 @@ function Player:new(area, x, y, opts)
     self.collider = self.area.world:newCircleCollider(self.x, self.y, self.r)
     self.collider:setObject(self)
     self.collider:setCollisionClass('Player')
-    self.depth = 500
+    self.depth = 300
 
     self.canShoot = true
     self.shootTimer = 0
@@ -25,6 +25,8 @@ function Player:new(area, x, y, opts)
     self.staminaDecrase = 10
     self.maxHP = 30
     self.hp = self.maxHP
+    self.ghostHPfast = self.hp
+    self.ghostHPslow = self.hp
     self.hpDecrase = 1
     self.minPower = 10
     self.maxPower = 20
@@ -61,6 +63,8 @@ function Player:new(area, x, y, opts)
     }
 
     self.polygonColors = {{255, 255, 255, 255}, {255, 255, 255, 255}}
+
+    self.timer:every(1, function() self:getDamaged(1) end)
 end
 
 function Player:update(dt)
@@ -93,7 +97,7 @@ function Player:update(dt)
 
     --Stats
     self.stamina = math.min(self.stamina + self.staminaDecrase * dt, self.maxStamina)
-    self.hp = math.min(self.hp + self.hpDecrase * dt, self.maxHP)
+    --self.hp = math.min(self.hp + self.hpDecrase * dt, self.maxHP)
     self.power = self.minPower + (self.maxPower - self.minPower) * self.hp/self.maxHP
     
     self.collider:setLinearVelocity(self.frontVelocity * math.cos(self.angle) - self.sideVelocity * math.sin(self.angle), self.frontVelocity * math.sin(self.angle) + self.sideVelocity * math.cos(self.angle))
@@ -130,6 +134,13 @@ function Player:draw()
     --love.graphics.line(self.x, self.y, self.x + 2 * self.r * math.cos(self.angle), self.y + 2 * self.r * math.sin(self.angle))
     --love.graphics.line(self.x, self.y, self.x + 2 * self.r * math.cos((self.angle + 5*math.pi/6)), self.y + 2 * self.r * math.sin((self.angle + 5 *math.pi/6)))
     --love.graphics.line(self.x, self.y, self.x + 2 * self.r * math.cos((self.angle + 7*math.pi/6)), self.y + 2 * self.r * math.sin((self.angle + 7* math.pi/6)))
+end
+
+function Player:getDamaged(dmg)
+    self.timer:tween(0.1, self, {ghostHPfast = self.hp - dmg}, 'linear')
+    self.timer:tween(0.5, self, {ghostHPslow = self.hp - dmg}, 'linear')
+    self.hp = self.hp - dmg
+    if self.hp < 0 then self:die() end
 end
 
 function Player:die()

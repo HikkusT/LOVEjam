@@ -3,14 +3,15 @@ Hourglass = GameObject:extend()
 function Hourglass:new(area, x, y, opts)
     Hourglass.super.new(self, area, x, y, opts)
 
-    self.offset = opts.offset or {30, 30}
+    self.offset = opts.offset or {100, 30}
     self.width = opts.width or 25
     self.height = opts.height or 30
     self.angle = -math.pi/2
     self.hourglassVelocity = opts.hourglassVelocity or 1
     self.hourglassFrequency = opts.hourglassFrequency or 3
+    self.depth = 500
 
-    self.x = self.offset[1] + self.width/2
+    self.x = gw/2 - self.offset[1] - self.width
     self.y = self.offset[2] + self.height/2
 
     self.polygons = {
